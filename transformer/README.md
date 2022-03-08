@@ -15,13 +15,15 @@ English: *And we 're going to tell you some stories from the sea here in video.*
 
 German: *Wir werden Ihnen einige Geschichten über das Meer in Videoform erzählen.*
 
-### 2/ Convert all the pairs into tokens and determine vocab size
+### 2/ Convert all the pairs into tokens
+
+
 ```
 src_tokenized_data =  ['And', 'we', "'re", 'going', 'to', 'tell', 'you', 'some', 'stories', 'from', 'the', 'sea', 'here', 'in', 'video', '.']
 trg_tokenized_data =  ['Wir', 'werden', 'Ihnen', 'einige', 'Geschichten', 'über', 'das', 'Meer', 'in', 'Videoform', 'erzählen', '.']
 ````
 
-**Vocab size**
+**Vocab size** (example)
 
 source (English): 36k tokens
 
@@ -57,11 +59,12 @@ Summary: A batch consists of (and an example for each tensor's size)
 
 
 ### 4/ Transformer
-From indices  `src_token_ids_batch` and `trg_token_ids_batch_input`, we get the embedding of each token which are initialized as random (store in `nn.Embedding`). This will be added up with positional_embedding. Thus, the input passed to transformer has a shape of (`batch_size` x `max_num_of_tokens`, `token_dimension`), then reshape to (`batch_size` x `num_heads` `max_num_of_tokens`, `token_dimension`) for multi-head.
+
+From indices  `src_token_ids_batch` and `trg_token_ids_batch_input`, we get the embedding of each token which are initialized as random (store in `nn.Embedding`). This will be added up with positional_embedding. Thus, the input passed to transformer has a shape of (`batch_size` x `max_num_of_tokens` x `token_dimension`), then reshape to (`batch_size` x `num_heads` x `max_num_of_tokens`, `token_dimension`) for multi-head.
 
 **Attention weights**: (`batch_size` x `num_heads` x `max_num_of_src_tokens`x `max_num_of_src_tokens`) (`*`)  or  (`batch_size` x `num_heads` x `max_num_of_trg_tokens`x `max_num_of_src_tokens`) (`**`), or (`batch_size` x `num_heads` x `max_num_of_trg_tokens` x `max_num_of_trg_tokens`) (`***`) depending on the input fed into attentions (we have 3 slightly different attentions in transformer).
 
-<img src="readme_pics/attention.png" width="450" height="300">
+<img src="readme_pics/attention.png" width="500" height="300">
 
 
 **Mask**: 
