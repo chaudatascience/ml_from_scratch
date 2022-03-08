@@ -88,6 +88,8 @@ self.linear.linear_layer.weight = self.src_emb.weight
 **Model Averaging**: generate `k` checkpoints, then take the average to create an ensembling effect.
 
 
-#### References
-- [The Annotated Transformer](https://nlp.seas.harvard.edu/2018/04/03/attention.html#positional-encoding)
-- [Aleksa Gordić's Github - Transformer](https://github.com/gordicaleksa/pytorch-original-transformer)
+
+---
+**I found these resources very helpful when reimplementing the paper.**
+- [The Annotated Transformer - HarvardNLP](https://nlp.seas.harvard.edu/2018/04/03/attention.html#positional-encoding)
+- [Transformer - Aleksa Gordić's Github Repo](https://github.com/gordicaleksa/pytorch-original-transformer)
