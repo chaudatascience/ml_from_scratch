@@ -85,7 +85,7 @@ class MultiHeadAttention(nn.Module):
         # attention_weights: (batch_size, num_heads, num_query_tokens, num_tokens)
         # value: (batch_size, num_tokens, num_heads, d_v)
         # Note: num_tokens here means num_value_tokens = num_key_tokens = num_tokens
-        attention = torch.einsum("bhqt,bthv->bhqv", attention_weights, value)
+        attention = torch.einsum("bhqt,bthv->bqhv", attention_weights, value)
         attention = attention.reshape(batch_size, -1, self.num_heads * self.d_v)  # (b, q, h*v)
 
         out = self.W(attention)  # out: (batch_size, num_query_tokens, model_dim)
