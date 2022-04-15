@@ -70,7 +70,7 @@ From indices  `src_token_ids_batch` and `trg_token_ids_batch_input`, we get the 
 **Mask**: 
 (`batch_size` x `1` x `1`x `max_num_of_src_tokens`) for attention (`*`) and (`**`)
 
-(`batch_size` x `1` x `1` x `max_num_of_trg_tokens`) (*mask for padding in Keys, i.e., no attention to padding tokens*) `AND` (`batch_size` x `1` x `max_num_of_trg_tokens` x `max_num_of_trg_tokens`) (*mask for future tokens*) = (`batch_size` x `1` x `max_num_of_trg_tokens` x `max_num_of_trg_tokens`) for (`***`)
+(`batch_size` x `1` x `1` x `max_num_of_trg_tokens`) (*mask for padding in Keys, i.e., no attention to padding tokens*) `AND` (`batch_size` x `1` x `max_num_of_trg_tokens` x `max_num_of_trg_tokens`) (*mask for future tokens*) = (`batch_size` x `1` x `max_num_of_trg_tokens` x `max_num_of_trg_tokens`) for (`***` - masked attention (bottom right))
 
 The inputs (src and trg token embeddings), outputs of the encoder, and output of the decoder all have the same size.
 
@@ -91,6 +91,22 @@ self.linear.linear_layer.weight = self.src_emb.weight
 **Model Averaging**: generate `k` checkpoints, then take the average to create an ensembling effect.
 
 
+**Note**: PyTorch has [Transformer](https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html?highlight=transformer#torch.nn.Transformer) module with a [tutorial](https://pytorch.org/tutorials/beginner/transformer_tutorial.html?highlight=transformer). In PyTorch implementation, they use 6 masking params:
+
+```
+src_mask: (S, S) - if we want to mask future tokens of encoder's attention (*). In this code, we don't do that.
+
+tgt_mask: (T, T) - mask out future tokens of decoder's masked attention (***), which we use in this implementation.
+  
+memory_mask: (T, S) - if we want decoder ignores some tokens in the input, i.e., to mask out future tokens of decoder's attention (**), which we don't use.
+
+src_key_padding_mask: (S)(S) for unbatched input otherwise (N, S) - for mask out padding of (*)
+
+tgt_key_padding_mask: (T)(T) for unbatched input otherwise (N, T) - for mask out padding of (***)
+
+memory_key_padding_mask: (S)(S) for unbatched input otherwise (N, S)  - for mask out padding of (**), oftern the same as (*)
+```
+In the original Transformer paper, the setting is `src_mask=None`, `memory_mask=None`, and `tgt_mask=generate_square_subsequent_mask(T)`.
 
 ---
 **I found these resources very helpful when reimplementing the paper.**
