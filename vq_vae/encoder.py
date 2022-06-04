@@ -1,3 +1,4 @@
+## https://github.com/zalandoresearch/pytorch-vq-vae/blob/master/vq-vae.ipynb
 from torch import nn
 
 from residual import ResidualStack
