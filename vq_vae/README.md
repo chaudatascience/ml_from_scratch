@@ -16,8 +16,15 @@ Overview of VQ-VAE [pic from [1]]
 - straight-through estimator: copy grad from decoder to encoder
 - Use moving average helps converge faster (2k epochs to make the loss <0.1, otherwise 6k)
 - `self.ema_sum = self._moving_avg(self.ema_sum, sum_cluster_in_batch, self.decay).detach()`: Without detach(), it will cause out of mem
-- perlexity: https://towardsdatascience.com/perplexity-intuition-and-derivation-105dd481c8f3?gi=6864ad453089
+- perplexity: https://towardsdatascience.com/perplexity-intuition-and-derivation-105dd481c8f3?gi=6864ad453089
 
+
+*TODO*
+
+Add PixelCNN to generate images
+  - Train PixelCNN/PixelSNAIL with the output from the codebook as a prior
+  - Start from a zero tensor, pass it to PixeCNN and then the decoder to generate a new image
+  
 ## References
 
 [1] Useful VQ-VAE implementation: https://github.com/zalandoresearch/pytorch-vq-vae/blob/master/vq-vae.ipynb
